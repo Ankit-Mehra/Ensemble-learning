@@ -4,6 +4,7 @@ Created on TUE July 26, 2022
 Author-Ankit Mehra 301154845
 Ensemble learning
 """
+import numpy as np
 from matplotlib import pyplot as plt
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
@@ -11,7 +12,7 @@ from sklearn.ensemble import RandomForestClassifier, VotingClassifier, ExtraTree
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import cross_val_score, KFold
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 from sklearn.model_selection import RandomizedSearchCV
@@ -192,16 +193,17 @@ pipeline2_Ankit.fit(X_train_Ankit, y_train_Ankit)
 
 # 17.	Carry out a 10-fold cross validation for both pipelines set shuffling to true and
 # random_state to 42
-scores1 = cross_val_score(pipeline1_Ankit, X_train_Ankit, y_train_Ankit, cv=10)
-scores2 = cross_val_score(pipeline2_Ankit, X_train_Ankit, y_train_Ankit, cv=10)
+cross_validation = KFold(n_splits=10, shuffle=True, random_state=42)
+scores1 = cross_val_score(pipeline1_Ankit, X_train_Ankit, y_train_Ankit, cv=cross_validation)
+scores2 = cross_val_score(pipeline2_Ankit, X_train_Ankit, y_train_Ankit, cv=cross_validation)
 print(scores1)
 print(scores2)
 
-
 # 18.	Printout the mean score evaluation for both pipelines, note the final results
 # in your written response and advise which pipeline performed better.
-print(scores1.mean())
-print(scores2.mean())
+print(np.mean(scores1))
+print(np.mean(scores2))
+
 
 # 19.	Predict the test using both pipelines and printout the confusion matrix, precision,
 # recall and accuracy scores and record the results in your written response. (Use a loop)
